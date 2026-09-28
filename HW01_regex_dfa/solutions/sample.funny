@@ -1,0 +1,13 @@
+function gcd(x: int, y: int)
+  returns r: int
+  uses a: int, b: int
+  a = x;
+  b = y;
+  while (b != 0)
+    invariant true;
+  {
+    r = a;
+    a = b;
+    b = r - (r / b) * b; // a % b
+  }
+  r = a;
