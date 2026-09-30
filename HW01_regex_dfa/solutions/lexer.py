@@ -17,10 +17,9 @@ import json
 import string
 from collections import defaultdict, deque
 
-EPS = None  # эпсилон-символ
+EPS = None 
 
 
-# ---------- 1. Thompson NFA construction ----------
 
 class NFA:
     def __init__(self):
@@ -88,7 +87,7 @@ def frag_plus(nfa, frag):
     return fs, e
 
 
-# ---------- 2. Токены Funny  ----------
+
 
 DIGITS = string.digits
 NONZERO = '123456789'
@@ -151,8 +150,6 @@ def build_master_nfa():
     return nfa, start
 
 
-# ---------- 3. Subset construction: NFA -> DFA ----------
-
 def eps_closure(nfa, states):
     stack = list(states)
     result = set(states)
@@ -201,11 +198,8 @@ def nfa_to_dfa(nfa, start):
     return dfa_trans, dfa_accept, dfa_states[start_set], len(dfa_states), alphabet
 
 
-# ---------- 4. Минимизация ДКА  ----------
 
 def minimize_dfa(dfa_trans, dfa_accept, start, n_states, alphabet):
-    # начальное разбиение: по (accept?, token_name) — токены разных типов
-    # никогда не сливаются в один класс
     def label(s):
         return dfa_accept.get(s, (None, None))
 
@@ -236,7 +230,6 @@ def minimize_dfa(dfa_trans, dfa_accept, start, n_states, alphabet):
     return min_trans, min_accept, state_group[start], len(set(state_group.values()))
 
 
-# ---------- 5. Лексер  ----------
 
 class Token:
     __slots__ = ('type', 'lexeme', 'pos')
@@ -271,8 +264,6 @@ def tokenize(text, trans, accept, start):
     return tokens
 
 
-# ---------- 6. Экспорт таблицы переходов: консоль + JSON ----------
-
 def export_table(trans, accept, start, n_states, alphabet, json_path='dfa_table.json'):
 
     accept_out = {
@@ -300,8 +291,6 @@ def export_table(trans, accept, start, n_states, alphabet, json_path='dfa_table.
     print(f'-> сохранено в {json_path}')
 
 
-# ---------- 7. Сборка ----------
-
 def build_pipeline():
     nfa, start_nfa = build_master_nfa()
     dfa_trans, dfa_accept, dfa_start, n_dfa, alphabet = nfa_to_dfa(nfa, start_nfa)
@@ -311,7 +300,6 @@ def build_pipeline():
     return min_trans, min_accept, min_start, alphabet, stats
 
 
-# ---------- main ----------
 
 def main():
     trans, accept, start, alphabet, stats = build_pipeline()

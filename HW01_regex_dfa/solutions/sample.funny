@@ -9,5 +9,6 @@ function gcd(x: int, y: int)
     r = a;
     a = b;
     b = r - (r / b) * b; // a % b
+
   }
   r = a;
