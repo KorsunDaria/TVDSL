@@ -1,0 +1,633 @@
+{
+  "node": "Module",
+  "decls": [
+    {
+      "node": "Function",
+      "name": "gcd",
+      "params": [
+        {
+          "node": "VarDef",
+          "name": "x",
+          "type": "int"
+        },
+        {
+          "node": "VarDef",
+          "name": "y",
+          "type": "int"
+        }
+      ],
+      "requires": {
+        "node": "And",
+        "left": {
+          "node": "Compare",
+          "op": ">=",
+          "left": {
+            "node": "Var",
+            "name": "x"
+          },
+          "right": {
+            "node": "Num",
+            "value": 0
+          }
+        },
+        "right": {
+          "node": "Compare",
+          "op": ">=",
+          "left": {
+            "node": "Var",
+            "name": "y"
+          },
+          "right": {
+            "node": "Num",
+            "value": 0
+          }
+        }
+      },
+      "returns": [
+        {
+          "node": "VarDef",
+          "name": "r",
+          "type": "int"
+        }
+      ],
+      "ensures": {
+        "node": "Compare",
+        "op": ">=",
+        "left": {
+          "node": "Var",
+          "name": "r"
+        },
+        "right": {
+          "node": "Num",
+          "value": 0
+        }
+      },
+      "locals": [
+        {
+          "node": "VarDef",
+          "name": "a",
+          "type": "int"
+        },
+        {
+          "node": "VarDef",
+          "name": "b",
+          "type": "int"
+        }
+      ],
+      "body": {
+        "node": "Block",
+        "stmts": [
+          {
+            "node": "Assign",
+            "target": "a",
+            "value": {
+              "node": "Var",
+              "name": "x"
+            }
+          },
+          {
+            "node": "Assign",
+            "target": "b",
+            "value": {
+              "node": "Var",
+              "name": "y"
+            }
+          },
+          {
+            "node": "While",
+            "cond": {
+              "node": "Compare",
+              "op": "!=",
+              "left": {
+                "node": "Var",
+                "name": "b"
+              },
+              "right": {
+                "node": "Num",
+                "value": 0
+              }
+            },
+            "invariant": {
+              "node": "And",
+              "left": {
+                "node": "Compare",
+                "op": ">=",
+                "left": {
+                  "node": "Var",
+                  "name": "a"
+                },
+                "right": {
+                  "node": "Num",
+                  "value": 0
+                }
+              },
+              "right": {
+                "node": "Compare",
+                "op": ">=",
+                "left": {
+                  "node": "Var",
+                  "name": "b"
+                },
+                "right": {
+                  "node": "Num",
+                  "value": 0
+                }
+              }
+            },
+            "body": {
+              "node": "Block",
+              "stmts": [
+                {
+                  "node": "Assign",
+                  "target": "r",
+                  "value": {
+                    "node": "Var",
+                    "name": "a"
+                  }
+                },
+                {
+                  "node": "Assign",
+                  "target": "a",
+                  "value": {
+                    "node": "Var",
+                    "name": "b"
+                  }
+                },
+                {
+                  "node": "Assign",
+                  "target": "b",
+                  "value": {
+                    "node": "BinOp",
+                    "op": "-",
+                    "left": {
+                      "node": "Var",
+                      "name": "r"
+                    },
+                    "right": {
+                      "node": "BinOp",
+                      "op": "*",
+                      "left": {
+                        "node": "BinOp",
+                        "op": "/",
+                        "left": {
+                          "node": "Var",
+                          "name": "r"
+                        },
+                        "right": {
+                          "node": "Var",
+                          "name": "b"
+                        }
+                      },
+                      "right": {
+                        "node": "Var",
+                        "name": "b"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "node": "Assign",
+            "target": "r",
+            "value": {
+              "node": "Var",
+              "name": "a"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "node": "Formula",
+      "name": "sorted",
+      "params": [
+        {
+          "node": "VarDef",
+          "name": "a",
+          "type": "int[]"
+        }
+      ],
+      "body": {
+        "node": "Quantifier",
+        "kind": "forall",
+        "var": {
+          "node": "VarDef",
+          "name": "i",
+          "type": "int"
+        },
+        "body": {
+          "node": "Implies",
+          "left": {
+            "node": "And",
+            "left": {
+              "node": "Compare",
+              "op": ">=",
+              "left": {
+                "node": "Var",
+                "name": "i"
+              },
+              "right": {
+                "node": "Num",
+                "value": 0
+              }
+            },
+            "right": {
+              "node": "Compare",
+              "op": "<",
+              "left": {
+                "node": "BinOp",
+                "op": "+",
+                "left": {
+                  "node": "Var",
+                  "name": "i"
+                },
+                "right": {
+                  "node": "Num",
+                  "value": 1
+                }
+              },
+              "right": {
+                "node": "Call",
+                "name": "length",
+                "args": [
+                  {
+                    "node": "Var",
+                    "name": "a"
+                  }
+                ]
+              }
+            }
+          },
+          "right": {
+            "node": "Compare",
+            "op": "<=",
+            "left": {
+              "node": "Index",
+              "array": "a",
+              "index": {
+                "node": "Var",
+                "name": "i"
+              }
+            },
+            "right": {
+              "node": "Index",
+              "array": "a",
+              "index": {
+                "node": "BinOp",
+                "op": "+",
+                "left": {
+                  "node": "Var",
+                  "name": "i"
+                },
+                "right": {
+                  "node": "Num",
+                  "value": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "node": "Function",
+      "name": "fill",
+      "params": [
+        {
+          "node": "VarDef",
+          "name": "a",
+          "type": "int[]"
+        },
+        {
+          "node": "VarDef",
+          "name": "v",
+          "type": "int"
+        }
+      ],
+      "requires": null,
+      "returns": [
+        {
+          "node": "VarDef",
+          "name": "b",
+          "type": "int[]"
+        }
+      ],
+      "ensures": {
+        "node": "FormulaRef",
+        "name": "sorted",
+        "args": [
+          {
+            "node": "Var",
+            "name": "b"
+          }
+        ]
+      },
+      "locals": [
+        {
+          "node": "VarDef",
+          "name": "i",
+          "type": "int"
+        }
+      ],
+      "body": {
+        "node": "Block",
+        "stmts": [
+          {
+            "node": "Assign",
+            "target": "b",
+            "value": {
+              "node": "Var",
+              "name": "a"
+            }
+          },
+          {
+            "node": "Assign",
+            "target": "i",
+            "value": {
+              "node": "Num",
+              "value": 0
+            }
+          },
+          {
+            "node": "While",
+            "cond": {
+              "node": "Compare",
+              "op": "<",
+              "left": {
+                "node": "Var",
+                "name": "i"
+              },
+              "right": {
+                "node": "Call",
+                "name": "length",
+                "args": [
+                  {
+                    "node": "Var",
+                    "name": "a"
+                  }
+                ]
+              }
+            },
+            "invariant": {
+              "node": "Compare",
+              "op": "<=",
+              "left": {
+                "node": "Num",
+                "value": 0
+              },
+              "right": {
+                "node": "Var",
+                "name": "i"
+              }
+            },
+            "body": {
+              "node": "Assign",
+              "target": "b",
+              "value": {
+                "node": "ArrayUpdate",
+                "array": "b",
+                "index": {
+                  "node": "Var",
+                  "name": "i"
+                },
+                "value": {
+                  "node": "Var",
+                  "name": "v"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "node": "Function",
+      "name": "divide",
+      "params": [
+        {
+          "node": "VarDef",
+          "name": "a",
+          "type": "int"
+        },
+        {
+          "node": "VarDef",
+          "name": "b",
+          "type": "int"
+        }
+      ],
+      "requires": {
+        "node": "Compare",
+        "op": "!=",
+        "left": {
+          "node": "Var",
+          "name": "b"
+        },
+        "right": {
+          "node": "Num",
+          "value": 0
+        }
+      },
+      "returns": [
+        {
+          "node": "VarDef",
+          "name": "q",
+          "type": "int"
+        },
+        {
+          "node": "VarDef",
+          "name": "r",
+          "type": "int"
+        }
+      ],
+      "ensures": null,
+      "locals": [],
+      "body": {
+        "node": "Block",
+        "stmts": [
+          {
+            "node": "Assign",
+            "target": "q",
+            "value": {
+              "node": "BinOp",
+              "op": "/",
+              "left": {
+                "node": "Var",
+                "name": "a"
+              },
+              "right": {
+                "node": "Var",
+                "name": "b"
+              }
+            }
+          },
+          {
+            "node": "Assign",
+            "target": "r",
+            "value": {
+              "node": "BinOp",
+              "op": "-",
+              "left": {
+                "node": "Var",
+                "name": "a"
+              },
+              "right": {
+                "node": "BinOp",
+                "op": "*",
+                "left": {
+                  "node": "Var",
+                  "name": "q"
+                },
+                "right": {
+                  "node": "Var",
+                  "name": "b"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "node": "Function",
+      "name": "caller",
+      "params": [
+        {
+          "node": "VarDef",
+          "name": "a",
+          "type": "int"
+        },
+        {
+          "node": "VarDef",
+          "name": "b",
+          "type": "int"
+        }
+      ],
+      "requires": null,
+      "returns": [
+        {
+          "node": "VarDef",
+          "name": "q",
+          "type": "int"
+        },
+        {
+          "node": "VarDef",
+          "name": "r",
+          "type": "int"
+        }
+      ],
+      "ensures": null,
+      "locals": [],
+      "body": {
+        "node": "Block",
+        "stmts": [
+          {
+            "node": "TupleAssign",
+            "targets": [
+              "q",
+              "r"
+            ],
+            "call": {
+              "node": "Call",
+              "name": "divide",
+              "args": [
+                {
+                  "node": "Var",
+                  "name": "a"
+                },
+                {
+                  "node": "Var",
+                  "name": "b"
+                }
+              ]
+            }
+          },
+          {
+            "node": "Assert",
+            "cond": {
+              "node": "Compare",
+              "op": "==",
+              "left": {
+                "node": "Var",
+                "name": "a"
+              },
+              "right": {
+                "node": "BinOp",
+                "op": "+",
+                "left": {
+                  "node": "BinOp",
+                  "op": "*",
+                  "left": {
+                    "node": "Var",
+                    "name": "q"
+                  },
+                  "right": {
+                    "node": "Var",
+                    "name": "b"
+                  }
+                },
+                "right": {
+                  "node": "Var",
+                  "name": "r"
+                }
+              }
+            }
+          },
+          {
+            "node": "If",
+            "cond": {
+              "node": "Or",
+              "left": {
+                "node": "Not",
+                "operand": {
+                  "node": "Compare",
+                  "op": ">",
+                  "left": {
+                    "node": "Var",
+                    "name": "q"
+                  },
+                  "right": {
+                    "node": "Num",
+                    "value": 0
+                  }
+                }
+              },
+              "right": {
+                "node": "Compare",
+                "op": "==",
+                "left": {
+                  "node": "Var",
+                  "name": "r"
+                },
+                "right": {
+                  "node": "Num",
+                  "value": 0
+                }
+              }
+            },
+            "then": {
+              "node": "Assign",
+              "target": "q",
+              "value": {
+                "node": "Neg",
+                "operand": {
+                  "node": "Var",
+                  "name": "q"
+                }
+              }
+            },
+            "orelse": {
+              "node": "Assign",
+              "target": "r",
+              "value": {
+                "node": "Num",
+                "value": 0
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

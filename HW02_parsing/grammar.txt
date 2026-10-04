@@ -1,0 +1,52 @@
+Грамматика Funny (HW2), EBNF. ";" в конце правила — часть EBNF, не токен.
+
+module      = decl { decl } ;
+decl        = IDENT "(" [ varDefs ] ")" declRest ;
+declRest    = "=>" predicate
+            | [ "requires" predicate ] "returns" varDefs
+              [ "ensures" predicate ] [ "uses" varDefs ] statement ;
+varDefs     = varDef { "," varDef } ;
+varDef      = IDENT ":" ( "int" | "int" "[" "]" ) ;
+
+statement   = assignment | conditional | loop | block | assertion ;
+assignment  = IDENT ( "=" expr ";"
+                    | "[" expr "]" "=" expr ";"
+                    | "," IDENT { "," IDENT } "=" call ";" ) ;
+conditional = "if" "(" condition ")" statement [ "else" statement ] ;
+loop        = "while" "(" condition ")" [ "invariant" predicate ] statement ;
+block       = "{" { statement } "}" ;
+assertion   = ( "assert" | "assume" ) predicate ";" ;
+
+expr        = term { ( "+" | "-" ) term } ;
+term        = unary { ( "*" | "/" ) unary } ;
+unary       = "-" unary | primary ;
+primary     = INT | IDENT | IDENT "[" expr "]" | call | "(" expr ")" ;
+call        = ( IDENT | "length" ) "(" [ expr { "," expr } ] ")" ;
+
+condition   = implies ;      (* без кванторов и ссылок на формулы *)
+predicate   = implies ;
+implies     = or [ "->" implies ] ;
+or          = and { "or" and } ;
+and         = not { "and" not } ;
+not         = "not" not | atom ;
+atom        = "true" | "false" | expr cmp expr | "(" implies ")"
+            | quantifier | formulaRef ;                  (* последние два — только в predicate *)
+cmp         = "==" | "!=" | ">=" | "<=" | ">" | "<" ;
+quantifier  = ( "forall" | "exists" ) "(" varDef "|" predicate ")" ;
+formulaRef  = IDENT "(" [ expr { "," expr } ] ")" ;
+
+Приоритеты и ассоциативность
+  выражения: унарный "-" > "*" "/" > "+" "-"; бинарные — слева направо
+  булевы:    not > and > or > "->"; and/or — слева направо, "->" — справа налево
+  else относится к ближайшему if
+
+Не LL(1) «в лоб» (решается одним токеном вперёд):
+  - decl: функция и формула начинаются одинаково, выбор после ")"
+  - atom, "(": условие в скобках или арифметика "(x + 1) > 2" — смотрим, что внутри и что после ")"
+  - atom, IDENT "(": formulaRef или вызов в сравнении — смотрим, есть ли дальше оператор или сравнение
+
+Отклонения от funny.ru.md
+  1. "->" вместо "→"; разрешена и в predicate
+  2. assert/assume добавлены по заданию HW2
+  3. модуль не может быть пустым
+  4. после тела формулы ";" не ставится
