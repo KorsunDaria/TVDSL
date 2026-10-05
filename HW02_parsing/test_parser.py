@@ -16,12 +16,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 HEAD = 'f() returns r: int '
 
 
-# ---------------------------------------------------------------------------
-# Вспомогательное
-# ---------------------------------------------------------------------------
-
 def sx(n):
-    """Компактная запись AST (из to_dict без позиций)."""
+    """Компактная запись AST."""
     if isinstance(n, dict):
         parts = [sx(v) for k, v in n.items() if k != 'node']
         return '(' + ' '.join([n['node']] + parts) + ')'
@@ -62,9 +58,6 @@ def line_col(src, offset):
     return line, col
 
 
-# ---------------------------------------------------------------------------
-# Позитивные тесты
-# ---------------------------------------------------------------------------
 
 A0 = '(Compare > (Var a) (Num 0))'
 B0 = '(Compare > (Var b) (Num 0))'
@@ -292,15 +285,9 @@ def test_json_serializable_with_positions():
     assign = block['stmts'][0]
     assert assign['pos'] == '3:3'
     binop = assign['value']
-    assert binop['pos'] == '3:9'          # позиция оператора
+    assert binop['pos'] == '3:9'          
     assert binop['left']['pos'] == '3:7' and binop['right']['pos'] == '3:11'
 
-
-# ---------------------------------------------------------------------------
-# Негативные тесты: (имя, исходник, [(иголка, фрагмент сообщения), ...])
-# иголка None — конец ввода; (текст, k) — k-й символ первого вхождения текста;
-# позиция = первое вхождение иголки в исходнике.
-# ---------------------------------------------------------------------------
 
 NEGATIVE = [
     ('empty_input', '', [(None, 'ожидается определение функции или формулы')]),
@@ -355,7 +342,7 @@ def _make_neg(name, src, expected):
         for (line, col, msg), (needle, frag) in zip(got, expected):
             if needle is None:
                 off = len(src)
-            elif isinstance(needle, tuple):  # (фрагмент, смещение внутри него)
+            elif isinstance(needle, tuple):  
                 off = src.index(needle[0]) + needle[1]
             else:
                 off = src.index(needle)
@@ -407,10 +394,6 @@ def test_errors_sorted_and_positive_coordinates():
     assert keys == sorted(keys)
 
 
-# ---------------------------------------------------------------------------
-# Устойчивость: ошибки не зацикливают и не роняют парсер
-# ---------------------------------------------------------------------------
-
 class _Timeout(Exception):
     pass
 
@@ -436,10 +419,10 @@ def test_no_hang_on_truncation_and_deletion():
     _alarm(60)
     try:
         for t in toks:
-            _check_terminates(src[:t.pos])                       # обрыв перед токеном
-            _check_terminates(src[:t.pos + len(t.lexeme)])       # обрыв после токена
-            _check_terminates(src[:t.pos] + src[t.pos + len(t.lexeme):])   # удаление токена
-            _check_terminates(src[:t.pos] + t.lexeme + ' ' + src[t.pos:])  # дублирование
+            _check_terminates(src[:t.pos])                       
+            _check_terminates(src[:t.pos + len(t.lexeme)])       
+            _check_terminates(src[:t.pos] + src[t.pos + len(t.lexeme):])   
+            _check_terminates(src[:t.pos] + t.lexeme + ' ' + src[t.pos:])  
     finally:
         if hasattr(signal, 'SIGALRM'):
             signal.alarm(0)
@@ -460,7 +443,7 @@ def test_no_hang_on_garbage():
             signal.alarm(0)
 
 
-# ---------------------------------------------------------------------------
+
 
 def run_all():
     tests = [(n, f) for n, f in sorted(globals().items())
@@ -471,7 +454,7 @@ def run_all():
             fn()
             print(f'[OK  ] {name[5:]}')
             passed += 1
-        except Exception as e:  # AssertionError и неожиданные исключения
+        except Exception as e:  
             print(f'[FAIL] {name[5:]}: {type(e).__name__}: {e}')
     print(f'\n{passed}/{len(tests)} тестов пройдено')
     return passed == len(tests)

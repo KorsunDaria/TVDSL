@@ -21,13 +21,8 @@ from typing import Optional
 
 from lexer import Token, build_pipeline, tokenize
 
-
-# ---------------------------------------------------------------------------
-# AST
-# ---------------------------------------------------------------------------
-
 class Node:
-    pos = None  # (строка, столбец) 1-based; выставляется парсером
+    pos = None 
 
 
 @dataclass
@@ -38,7 +33,7 @@ class Module(Node):
 @dataclass
 class VarDef(Node):
     name: str
-    type: str  # 'int' | 'int[]'
+    type: str 
 
 
 @dataclass
@@ -144,7 +139,6 @@ class ArrayUpdate(Node):
     value: Node
 
 
-# условия и предикаты
 @dataclass
 class BoolLit(Node):
     value: bool
@@ -214,9 +208,6 @@ def to_dict(node, with_pos=False):
     return node
 
 
-# ---------------------------------------------------------------------------
-# Диагностика
-# ---------------------------------------------------------------------------
 
 @dataclass
 class Diagnostic:
@@ -244,9 +235,6 @@ class ParseResult:
         return not self.errors
 
 
-# ---------------------------------------------------------------------------
-# Парсер
-# ---------------------------------------------------------------------------
 
 CMP = {'EQ': '==', 'NEQ': '!=', 'LE': '<=', 'GE': '>=', 'LT': '<', 'GT': '>'}
 ARITH = {'PLUS': '+', 'MINUS': '-', 'STAR': '*', 'SLASH': '/'}
@@ -273,8 +261,7 @@ class Parser:
         self.errors = []
         self.line_starts = [0] + [k + 1 for k, c in enumerate(text) if c == '\n']
 
-    # --- вспомогательное -------------------------------------------------
-
+   
     @property
     def tok(self):
         return self.toks[self.i]
@@ -320,8 +307,7 @@ class Parser:
             raise self.expected(what)
         return self.advance()
 
-    # --- модуль и определения -------------------------------------------
-
+    
     def parse_module(self):
         first = self.tok
         decls = []
@@ -401,8 +387,7 @@ class Parser:
             typ = 'int[]'
         return self.mk(VarDef, name, name.lexeme, typ)
 
-    # --- операторы -------------------------------------------------------
-
+    
     def parse_statement(self):
         t = self.tok
         if t.type == 'KW_IF':
@@ -473,7 +458,7 @@ class Parser:
             if t in ('RBRACE', 'LBRACE', 'KW_IF', 'KW_WHILE', 'KW_ASSERT', 'KW_ASSUME'):
                 break
             self.advance()
-        if self.i == start:  # гарантия прогресса
+        if self.i == start: 
             self.advance()
 
     def parse_assignment(self):
@@ -506,17 +491,6 @@ class Parser:
         value = self.parse_expr()
         self.expect('SEMI', "';'")
         return self.mk(Assign, name, name.lexeme, value)
-
-    # --- условия и предикаты ----------------------------------------------
-    # Приоритет: not > and > or > '->' (правоассоциативна).
-    # pred=True — режим предиката (кванторы, ссылки на формулы).
-    #
-    # Два места не LL(1) «в лоб»; решаются отложенным решением по одному токену
-    # после уже разобранной конструкции:
-    #   '(' ...        — скобки вокруг условия или вокруг арифметики (x+1) > 2;
-    #   IDENT '(' ...  — ссылка на формулу или вызов функции в сравнении.
-    # Поэтому сравнение-«голое выражение» временно возвращается наверх, а
-    # потребители булевых операндов проверяют его через require_bool.
 
     def parse_condition(self):
         node = self.parse_implies(False)
@@ -598,7 +572,7 @@ class Parser:
             op = self.advance()
             right = self.parse_expr()
             return self.mk(Compare, op, CMP[op.type], lhs, right)
-        return lhs  # «голое» выражение; отвергается потребителем
+        return lhs  
 
     def parse_quantifier(self):
         kw = self.advance()
@@ -609,7 +583,6 @@ class Parser:
         self.expect('RPAREN', "')'")
         return self.mk(Quantifier, kw, kw.lexeme, var, body)
 
-    # --- арифметические выражения -----------------------------------------
 
     def parse_expr(self, min_prec=1, lhs=None):
         if lhs is None:
@@ -617,7 +590,7 @@ class Parser:
         while self.at(*ARITH) and PREC[ARITH[self.tok.type]] >= min_prec:
             op_tok = self.advance()
             op = ARITH[op_tok.type]
-            rhs = self.parse_expr(PREC[op] + 1)  # левая ассоциативность
+            rhs = self.parse_expr(PREC[op] + 1)  
             lhs = self.mk(BinOp, op_tok, op, lhs, rhs)
         return lhs
 
@@ -654,7 +627,7 @@ class Parser:
         raise self.expected('выражение')
 
     def parse_call(self):
-        name = self.advance()  # IDENT или 'length'
+        name = self.advance()  
         self.expect('LPAREN', "'('")
         args = []
         if not self.at('RPAREN'):
