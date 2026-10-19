@@ -16,30 +16,30 @@ def errs(src):
 
 
 def expect(src, fragment):
-    off = src.index('§')
-    src = src.replace('§', '')
+    off = src.index('!')
+    src = src.replace('!', '')
     line, col = src.count('\n', 0, off) + 1, off - (src.rfind('\n', 0, off) + 1) + 1
     got = errs(src)
     assert len(got) == 1 and got[0][:2] == (line, col) and fragment in got[0][2], (src, got)
 
 
 NEGATIVE = [
-    (H + 'r = §x;', 'не объявлена'),                                        # неизвестное имя
-    ('f(a: int, §a: int)\nreturns r: int\nr = 1;', 'повторное объявление'),  # повтор переменной
-    ('f() returns r: int r = 1;\n§f() returns r: int r = 2;', 'повторное определение'),
-    (H + '§r = b;', 'нельзя присвоить'),                                    # int[] -> int
-    (H + 'if (§b == 1) r = 1;', 'ожидается int'),                           # операнд сравнения
-    (H + 'r = §a[0];', 'не массив'),
-    (G + 'f() returns r: int r = §g(1, 2);', 'ожидает 1'),                  # число аргументов
-    (G + 'f(b: int[]) returns r: int r = g(§b);', 'аргумент 1'),            # тип аргумента
-    (D + 'f() returns r: int r = §d();', 'возвращает 2'),
-    (D + 'f() returns r: int uses s: int, t: int, u: int §s, t, u = d();', 'слева 3'),
-    ('f() returns r: int r = §h(1);', 'неизвестная функция'),
-    ('f() returns r: int r = §g();\ng() returns y: int y = 1;', 'неизвестная функция'),  # до определения
-    ('p(x: int) => x > 0\nf() returns r: int r = §p(1);', 'формула'),
-    ('f() returns r: int ensures r > §q uses q: int r = 1;', 'не объявлена'),  # ensures не видит locals
-    ('f(a: int[]) returns r: int { x = 1; §x = a; r = x; }', 'нельзя присвоить'),  # вывод: противоречие
-    ('f() returns r: int { r = §x; x = 1; }', 'не объявлена'),                # чтение до присваивания
+    (H + 'r = !x;', 'не объявлена'),                                        
+    ('f(a: int, !a: int)\nreturns r: int\nr = 1;', 'повторное объявление'), 
+    ('f() returns r: int r = 1;\n!f() returns r: int r = 2;', 'повторное определение'),
+    (H + '!r = b;', 'нельзя присвоить'),                                    
+    (H + 'if (!b == 1) r = 1;', 'ожидается int'),                          
+    (H + 'r = !a[0];', 'не массив'),
+    (G + 'f() returns r: int r = !g(1, 2);', 'ожидает 1'),                  
+    (G + 'f(b: int[]) returns r: int r = g(!b);', 'аргумент 1'),            
+    (D + 'f() returns r: int r = !d();', 'возвращает 2'),
+    (D + 'f() returns r: int uses s: int, t: int, u: int !s, t, u = d();', 'слева 3'),
+    ('f() returns r: int r = !h(1);', 'неизвестная функция'),
+    ('f() returns r: int r = !g();\ng() returns y: int y = 1;', 'неизвестная функция'),  
+    ('p(x: int) => x > 0\nf() returns r: int r = !p(1);', 'формула'),
+    ('f() returns r: int ensures r > !q uses q: int r = 1;', 'не объявлена'), 
+    ('f(a: int[]) returns r: int { x = 1; !x = a; r = x; }', 'нельзя присвоить'),  
+    ('f() returns r: int { r = !x; x = 1; }', 'не объявлена'),               
 ]
 
 
