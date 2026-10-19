@@ -3,100 +3,113 @@
   "decls": [
     {
       "node": "Function",
-      "name": "gcd",
+      "name": "inc",
       "params": [
+        {
+          "node": "VarDef",
+          "name": "n",
+          "type": "int",
+          "pos": "1:5"
+        }
+      ],
+      "requires": null,
+      "returns": [
+        {
+          "node": "VarDef",
+          "name": "r",
+          "type": "int",
+          "pos": "1:21"
+        }
+      ],
+      "ensures": null,
+      "locals": [],
+      "body": {
+        "node": "Block",
+        "stmts": [
+          {
+            "node": "Assign",
+            "target": "r",
+            "value": {
+              "node": "BinOp",
+              "op": "+",
+              "left": {
+                "node": "Var",
+                "name": "n",
+                "etype": "int",
+                "pos": "3:9"
+              },
+              "right": {
+                "node": "Num",
+                "value": 1,
+                "etype": "int",
+                "pos": "3:13"
+              },
+              "etype": "int",
+              "pos": "3:11"
+            },
+            "pos": "3:5"
+          }
+        ],
+        "pos": "2:1"
+      },
+      "pos": "1:1"
+    },
+    {
+      "node": "Function",
+      "name": "test",
+      "params": [
+        {
+          "node": "VarDef",
+          "name": "arr",
+          "type": "int[]",
+          "pos": "5:6"
+        },
+        {
+          "node": "VarDef",
+          "name": "k",
+          "type": "int",
+          "pos": "5:18"
+        }
+      ],
+      "requires": {
+        "node": "Compare",
+        "op": ">",
+        "left": {
+          "node": "Var",
+          "name": "m",
+          "etype": "?",
+          "pos": "6:10"
+        },
+        "right": {
+          "node": "Num",
+          "value": 0,
+          "etype": "int",
+          "pos": "6:14"
+        },
+        "etype": "bool",
+        "pos": "6:12"
+      },
+      "returns": [
+        {
+          "node": "VarDef",
+          "name": "res",
+          "type": "int",
+          "pos": "7:9"
+        }
+      ],
+      "ensures": null,
+      "locals": [
         {
           "node": "VarDef",
           "name": "x",
           "type": "int",
-          "pos": "2:5"
+          "pos": "9:5"
         },
         {
           "node": "VarDef",
           "name": "y",
           "type": "int",
-          "pos": "2:13"
-        }
-      ],
-      "requires": {
-        "node": "And",
-        "left": {
-          "node": "Compare",
-          "op": ">=",
-          "left": {
-            "node": "Var",
-            "name": "x",
-            "etype": "int",
-            "pos": "3:12"
-          },
-          "right": {
-            "node": "Num",
-            "value": 0,
-            "etype": "int",
-            "pos": "3:17"
-          },
-          "etype": "bool",
-          "pos": "3:14"
-        },
-        "right": {
-          "node": "Compare",
-          "op": ">=",
-          "left": {
-            "node": "Var",
-            "name": "y",
-            "etype": "int",
-            "pos": "3:23"
-          },
-          "right": {
-            "node": "Num",
-            "value": 0,
-            "etype": "int",
-            "pos": "3:28"
-          },
-          "etype": "bool",
-          "pos": "3:25"
-        },
-        "etype": "bool",
-        "pos": "3:19"
-      },
-      "returns": [
-        {
-          "node": "VarDef",
-          "name": "r",
-          "type": "int",
-          "pos": "4:11"
-        }
-      ],
-      "ensures": {
-        "node": "Compare",
-        "op": ">=",
-        "left": {
-          "node": "Var",
-          "name": "r",
-          "etype": "int",
-          "pos": "5:11"
-        },
-        "right": {
-          "node": "Num",
-          "value": 0,
-          "etype": "int",
-          "pos": "5:16"
-        },
-        "etype": "bool",
-        "pos": "5:13"
-      },
-      "locals": [
-        {
-          "node": "VarDef",
-          "name": "a",
-          "type": "int",
-          "pos": "6:8"
-        },
-        {
-          "node": "VarDef",
-          "name": "b",
-          "type": "int",
-          "pos": "6:16"
+          "pos": "11:5"
         }
       ],
       "body": {
@@ -104,772 +117,185 @@
         "stmts": [
           {
             "node": "Assign",
-            "target": "a",
+            "target": "x",
             "value": {
-              "node": "Var",
-              "name": "x",
-              "etype": "int",
-              "pos": "8:7"
-            },
-            "pos": "8:3"
-          },
-          {
-            "node": "Assign",
-            "target": "b",
-            "value": {
-              "node": "Var",
-              "name": "y",
-              "etype": "int",
-              "pos": "9:7"
-            },
-            "pos": "9:3"
-          },
-          {
-            "node": "While",
-            "cond": {
-              "node": "Compare",
-              "op": "!=",
+              "node": "BinOp",
+              "op": "+",
               "left": {
                 "node": "Var",
-                "name": "b",
+                "name": "k",
                 "etype": "int",
-                "pos": "10:10"
+                "pos": "9:9"
               },
               "right": {
                 "node": "Num",
-                "value": 0,
+                "value": 1,
                 "etype": "int",
-                "pos": "10:15"
+                "pos": "9:13"
               },
-              "etype": "bool",
-              "pos": "10:12"
+              "etype": "int",
+              "pos": "9:11"
             },
-            "invariant": {
-              "node": "And",
-              "left": {
-                "node": "Compare",
-                "op": ">=",
-                "left": {
-                  "node": "Var",
-                  "name": "a",
-                  "etype": "int",
-                  "pos": "11:15"
-                },
-                "right": {
-                  "node": "Num",
-                  "value": 0,
-                  "etype": "int",
-                  "pos": "11:20"
-                },
-                "etype": "bool",
-                "pos": "11:17"
-              },
-              "right": {
-                "node": "Compare",
-                "op": ">=",
-                "left": {
-                  "node": "Var",
-                  "name": "b",
-                  "etype": "int",
-                  "pos": "11:26"
-                },
-                "right": {
-                  "node": "Num",
-                  "value": 0,
-                  "etype": "int",
-                  "pos": "11:31"
-                },
-                "etype": "bool",
-                "pos": "11:28"
-              },
-              "etype": "bool",
-              "pos": "11:22"
-            },
-            "body": {
-              "node": "Block",
-              "stmts": [
-                {
-                  "node": "Assign",
-                  "target": "r",
-                  "value": {
-                    "node": "Var",
-                    "name": "a",
-                    "etype": "int",
-                    "pos": "13:9"
-                  },
-                  "pos": "13:5"
-                },
-                {
-                  "node": "Assign",
-                  "target": "a",
-                  "value": {
-                    "node": "Var",
-                    "name": "b",
-                    "etype": "int",
-                    "pos": "14:9"
-                  },
-                  "pos": "14:5"
-                },
-                {
-                  "node": "Assign",
-                  "target": "b",
-                  "value": {
-                    "node": "BinOp",
-                    "op": "-",
-                    "left": {
-                      "node": "Var",
-                      "name": "r",
-                      "etype": "int",
-                      "pos": "15:9"
-                    },
-                    "right": {
-                      "node": "BinOp",
-                      "op": "*",
-                      "left": {
-                        "node": "BinOp",
-                        "op": "/",
-                        "left": {
-                          "node": "Var",
-                          "name": "r",
-                          "etype": "int",
-                          "pos": "15:14"
-                        },
-                        "right": {
-                          "node": "Var",
-                          "name": "b",
-                          "etype": "int",
-                          "pos": "15:18"
-                        },
-                        "etype": "int",
-                        "pos": "15:16"
-                      },
-                      "right": {
-                        "node": "Var",
-                        "name": "b",
-                        "etype": "int",
-                        "pos": "15:23"
-                      },
-                      "etype": "int",
-                      "pos": "15:21"
-                    },
-                    "etype": "int",
-                    "pos": "15:11"
-                  },
-                  "pos": "15:5"
-                }
-              ],
-              "pos": "12:3"
-            },
-            "pos": "10:3"
+            "pos": "9:5"
           },
           {
             "node": "Assign",
-            "target": "r",
+            "target": "x",
             "value": {
               "node": "Var",
-              "name": "a",
-              "etype": "int",
-              "pos": "17:7"
-            },
-            "pos": "17:3"
-          }
-        ],
-        "pos": "7:1"
-      },
-      "pos": "2:1"
-    },
-    {
-      "node": "Formula",
-      "name": "sorted",
-      "params": [
-        {
-          "node": "VarDef",
-          "name": "a",
-          "type": "int[]",
-          "pos": "21:8"
-        }
-      ],
-      "body": {
-        "node": "Quantifier",
-        "kind": "forall",
-        "var": {
-          "node": "VarDef",
-          "name": "i",
-          "type": "int",
-          "pos": "22:11"
-        },
-        "body": {
-          "node": "Implies",
-          "left": {
-            "node": "And",
-            "left": {
-              "node": "Compare",
-              "op": ">=",
-              "left": {
-                "node": "Var",
-                "name": "i",
-                "etype": "int",
-                "pos": "22:20"
-              },
-              "right": {
-                "node": "Num",
-                "value": 0,
-                "etype": "int",
-                "pos": "22:25"
-              },
-              "etype": "bool",
-              "pos": "22:22"
-            },
-            "right": {
-              "node": "Compare",
-              "op": "<",
-              "left": {
-                "node": "BinOp",
-                "op": "+",
-                "left": {
-                  "node": "Var",
-                  "name": "i",
-                  "etype": "int",
-                  "pos": "22:31"
-                },
-                "right": {
-                  "node": "Num",
-                  "value": 1,
-                  "etype": "int",
-                  "pos": "22:35"
-                },
-                "etype": "int",
-                "pos": "22:33"
-              },
-              "right": {
-                "node": "Call",
-                "name": "length",
-                "args": [
-                  {
-                    "node": "Var",
-                    "name": "a",
-                    "etype": "int[]",
-                    "pos": "22:46"
-                  }
-                ],
-                "etype": "int",
-                "pos": "22:39"
-              },
-              "etype": "bool",
-              "pos": "22:37"
-            },
-            "etype": "bool",
-            "pos": "22:27"
-          },
-          "right": {
-            "node": "Compare",
-            "op": "<=",
-            "left": {
-              "node": "Index",
-              "array": "a",
-              "index": {
-                "node": "Var",
-                "name": "i",
-                "etype": "int",
-                "pos": "22:54"
-              },
-              "etype": "int",
-              "pos": "22:52"
-            },
-            "right": {
-              "node": "Index",
-              "array": "a",
-              "index": {
-                "node": "BinOp",
-                "op": "+",
-                "left": {
-                  "node": "Var",
-                  "name": "i",
-                  "etype": "int",
-                  "pos": "22:62"
-                },
-                "right": {
-                  "node": "Num",
-                  "value": 1,
-                  "etype": "int",
-                  "pos": "22:66"
-                },
-                "etype": "int",
-                "pos": "22:64"
-              },
-              "etype": "int",
-              "pos": "22:60"
-            },
-            "etype": "bool",
-            "pos": "22:57"
-          },
-          "etype": "bool",
-          "pos": "22:49"
-        },
-        "etype": "bool",
-        "pos": "22:3"
-      },
-      "pos": "21:1"
-    },
-    {
-      "node": "Function",
-      "name": "fill",
-      "params": [
-        {
-          "node": "VarDef",
-          "name": "a",
-          "type": "int[]",
-          "pos": "25:6"
-        },
-        {
-          "node": "VarDef",
-          "name": "v",
-          "type": "int",
-          "pos": "25:16"
-        }
-      ],
-      "requires": null,
-      "returns": [
-        {
-          "node": "VarDef",
-          "name": "b",
-          "type": "int[]",
-          "pos": "26:11"
-        }
-      ],
-      "ensures": {
-        "node": "FormulaRef",
-        "name": "sorted",
-        "args": [
-          {
-            "node": "Var",
-            "name": "b",
-            "etype": "int[]",
-            "pos": "27:18"
-          }
-        ],
-        "etype": "bool",
-        "pos": "27:11"
-      },
-      "locals": [
-        {
-          "node": "VarDef",
-          "name": "i",
-          "type": "int",
-          "pos": "28:8"
-        }
-      ],
-      "body": {
-        "node": "Block",
-        "stmts": [
-          {
-            "node": "Assign",
-            "target": "b",
-            "value": {
-              "node": "Var",
-              "name": "a",
+              "name": "arr",
               "etype": "int[]",
-              "pos": "30:7"
+              "pos": "10:9"
             },
-            "pos": "30:3"
+            "pos": "10:5"
           },
           {
             "node": "Assign",
-            "target": "i",
+            "target": "y",
             "value": {
-              "node": "Num",
-              "value": 0,
-              "etype": "int",
-              "pos": "31:7"
-            },
-            "pos": "31:3"
-          },
-          {
-            "node": "While",
-            "cond": {
-              "node": "Compare",
-              "op": "<",
+              "node": "BinOp",
+              "op": "+",
               "left": {
                 "node": "Var",
-                "name": "i",
-                "etype": "int",
-                "pos": "32:10"
+                "name": "z",
+                "etype": "?",
+                "pos": "11:9"
               },
               "right": {
-                "node": "Call",
-                "name": "length",
-                "args": [
-                  {
-                    "node": "Var",
-                    "name": "a",
-                    "etype": "int[]",
-                    "pos": "32:21"
-                  }
-                ],
-                "etype": "int",
-                "pos": "32:14"
-              },
-              "etype": "bool",
-              "pos": "32:12"
-            },
-            "invariant": {
-              "node": "Compare",
-              "op": "<=",
-              "left": {
                 "node": "Num",
-                "value": 0,
+                "value": 1,
                 "etype": "int",
-                "pos": "33:15"
-              },
-              "right": {
-                "node": "Var",
-                "name": "i",
-                "etype": "int",
-                "pos": "33:20"
-              },
-              "etype": "bool",
-              "pos": "33:17"
-            },
-            "body": {
-              "node": "Assign",
-              "target": "b",
-              "value": {
-                "node": "ArrayUpdate",
-                "array": "b",
-                "index": {
-                  "node": "Var",
-                  "name": "i",
-                  "etype": "int",
-                  "pos": "34:7"
-                },
-                "value": {
-                  "node": "Var",
-                  "name": "v",
-                  "etype": "int",
-                  "pos": "34:12"
-                },
-                "etype": "int[]",
-                "pos": "34:5"
-              },
-              "pos": "34:5"
-            },
-            "pos": "32:3"
-          }
-        ],
-        "pos": "29:1"
-      },
-      "pos": "25:1"
-    },
-    {
-      "node": "Function",
-      "name": "divide",
-      "params": [
-        {
-          "node": "VarDef",
-          "name": "a",
-          "type": "int",
-          "pos": "38:8"
-        },
-        {
-          "node": "VarDef",
-          "name": "b",
-          "type": "int",
-          "pos": "38:16"
-        }
-      ],
-      "requires": {
-        "node": "Compare",
-        "op": "!=",
-        "left": {
-          "node": "Var",
-          "name": "b",
-          "etype": "int",
-          "pos": "39:12"
-        },
-        "right": {
-          "node": "Num",
-          "value": 0,
-          "etype": "int",
-          "pos": "39:17"
-        },
-        "etype": "bool",
-        "pos": "39:14"
-      },
-      "returns": [
-        {
-          "node": "VarDef",
-          "name": "q",
-          "type": "int",
-          "pos": "40:11"
-        },
-        {
-          "node": "VarDef",
-          "name": "r",
-          "type": "int",
-          "pos": "40:19"
-        }
-      ],
-      "ensures": null,
-      "locals": [],
-      "body": {
-        "node": "Block",
-        "stmts": [
-          {
-            "node": "Assign",
-            "target": "q",
-            "value": {
-              "node": "BinOp",
-              "op": "/",
-              "left": {
-                "node": "Var",
-                "name": "a",
-                "etype": "int",
-                "pos": "42:7"
-              },
-              "right": {
-                "node": "Var",
-                "name": "b",
-                "etype": "int",
-                "pos": "42:11"
+                "pos": "11:13"
               },
               "etype": "int",
-              "pos": "42:9"
+              "pos": "11:11"
             },
-            "pos": "42:3"
+            "pos": "11:5"
           },
           {
             "node": "Assign",
-            "target": "r",
+            "target": "res",
             "value": {
-              "node": "BinOp",
-              "op": "-",
-              "left": {
-                "node": "Var",
-                "name": "a",
-                "etype": "int",
-                "pos": "43:7"
-              },
-              "right": {
-                "node": "BinOp",
-                "op": "*",
-                "left": {
-                  "node": "Var",
-                  "name": "q",
-                  "etype": "int",
-                  "pos": "43:11"
-                },
-                "right": {
-                  "node": "Var",
-                  "name": "b",
-                  "etype": "int",
-                  "pos": "43:15"
-                },
-                "etype": "int",
-                "pos": "43:13"
-              },
-              "etype": "int",
-              "pos": "43:9"
-            },
-            "pos": "43:3"
-          }
-        ],
-        "pos": "41:1"
-      },
-      "pos": "38:1"
-    },
-    {
-      "node": "Function",
-      "name": "caller",
-      "params": [
-        {
-          "node": "VarDef",
-          "name": "a",
-          "type": "int",
-          "pos": "46:8"
-        },
-        {
-          "node": "VarDef",
-          "name": "b",
-          "type": "int",
-          "pos": "46:16"
-        }
-      ],
-      "requires": null,
-      "returns": [
-        {
-          "node": "VarDef",
-          "name": "q",
-          "type": "int",
-          "pos": "47:11"
-        },
-        {
-          "node": "VarDef",
-          "name": "r",
-          "type": "int",
-          "pos": "47:19"
-        }
-      ],
-      "ensures": null,
-      "locals": [],
-      "body": {
-        "node": "Block",
-        "stmts": [
-          {
-            "node": "TupleAssign",
-            "targets": [
-              "q",
-              "r"
-            ],
-            "call": {
               "node": "Call",
-              "name": "divide",
+              "name": "inc",
               "args": [
                 {
                   "node": "Var",
-                  "name": "a",
+                  "name": "k",
                   "etype": "int",
-                  "pos": "49:17"
+                  "pos": "12:15"
                 },
                 {
-                  "node": "Var",
-                  "name": "b",
+                  "node": "Num",
+                  "value": 1,
                   "etype": "int",
-                  "pos": "49:20"
+                  "pos": "12:18"
                 }
               ],
-              "etype": "(int, int)",
-              "pos": "49:10"
+              "etype": "int",
+              "pos": "12:11"
             },
-            "pos": "49:3"
+            "pos": "12:5"
           },
           {
-            "node": "Assert",
-            "cond": {
-              "node": "Compare",
-              "op": "==",
-              "left": {
-                "node": "Var",
-                "name": "a",
-                "etype": "int",
-                "pos": "50:10"
-              },
-              "right": {
-                "node": "BinOp",
-                "op": "+",
-                "left": {
-                  "node": "BinOp",
-                  "op": "*",
-                  "left": {
-                    "node": "Var",
-                    "name": "q",
-                    "etype": "int",
-                    "pos": "50:15"
-                  },
-                  "right": {
-                    "node": "Var",
-                    "name": "b",
-                    "etype": "int",
-                    "pos": "50:19"
-                  },
-                  "etype": "int",
-                  "pos": "50:17"
-                },
-                "right": {
+            "node": "Assign",
+            "target": "res",
+            "value": {
+              "node": "Call",
+              "name": "inc",
+              "args": [
+                {
                   "node": "Var",
-                  "name": "r",
-                  "etype": "int",
-                  "pos": "50:23"
-                },
-                "etype": "int",
-                "pos": "50:21"
-              },
-              "etype": "bool",
-              "pos": "50:12"
+                  "name": "arr",
+                  "etype": "int[]",
+                  "pos": "13:15"
+                }
+              ],
+              "etype": "int",
+              "pos": "13:11"
             },
-            "pos": "50:3"
+            "pos": "13:5"
           },
           {
-            "node": "If",
-            "cond": {
-              "node": "Or",
-              "left": {
-                "node": "Not",
-                "operand": {
-                  "node": "Compare",
-                  "op": ">",
-                  "left": {
-                    "node": "Var",
-                    "name": "q",
-                    "etype": "int",
-                    "pos": "51:12"
-                  },
-                  "right": {
-                    "node": "Num",
-                    "value": 0,
-                    "etype": "int",
-                    "pos": "51:16"
-                  },
-                  "etype": "bool",
-                  "pos": "51:14"
-                },
-                "etype": "bool",
-                "pos": "51:7"
-              },
-              "right": {
-                "node": "Compare",
-                "op": "==",
-                "left": {
+            "node": "TupleAssign",
+            "targets": [
+              "a",
+              "b"
+            ],
+            "call": {
+              "node": "Call",
+              "name": "inc",
+              "args": [
+                {
                   "node": "Var",
-                  "name": "r",
+                  "name": "k",
                   "etype": "int",
-                  "pos": "51:22"
-                },
-                "right": {
-                  "node": "Num",
-                  "value": 0,
-                  "etype": "int",
-                  "pos": "51:27"
-                },
-                "etype": "bool",
-                "pos": "51:24"
-              },
-              "etype": "bool",
-              "pos": "51:19"
+                  "pos": "14:16"
+                }
+              ],
+              "etype": "(int)",
+              "pos": "14:12"
             },
-            "then": {
-              "node": "Assign",
-              "target": "q",
-              "value": {
-                "node": "Neg",
-                "operand": {
-                  "node": "Var",
-                  "name": "q",
-                  "etype": "int",
-                  "pos": "52:10"
-                },
-                "etype": "int",
-                "pos": "52:9"
-              },
-              "pos": "52:5"
-            },
-            "orelse": {
-              "node": "Assign",
-              "target": "r",
-              "value": {
+            "pos": "14:5"
+          },
+          {
+            "node": "Assign",
+            "target": "res",
+            "value": {
+              "node": "Index",
+              "array": "k",
+              "index": {
                 "node": "Num",
                 "value": 0,
                 "etype": "int",
-                "pos": "54:9"
+                "pos": "15:13"
               },
-              "pos": "54:5"
+              "etype": "int",
+              "pos": "15:11"
             },
-            "pos": "51:3"
+            "pos": "15:5"
+          },
+          {
+            "node": "Assign",
+            "target": "res",
+            "value": {
+              "node": "Index",
+              "array": "arr",
+              "index": {
+                "node": "Var",
+                "name": "arr",
+                "etype": "int[]",
+                "pos": "16:15"
+              },
+              "etype": "int",
+              "pos": "16:11"
+            },
+            "pos": "16:5"
+          },
+          {
+            "node": "Assign",
+            "target": "res",
+            "value": {
+              "node": "Call",
+              "name": "foo",
+              "args": [
+                {
+                  "node": "Var",
+                  "name": "k",
+                  "etype": "int",
+                  "pos": "17:15"
+                }
+              ],
+              "etype": "?",
+              "pos": "17:11"
+            },
+            "pos": "17:5"
           }
         ],
-        "pos": "48:1"
+        "pos": "8:1"
       },
-      "pos": "46:1"
+      "pos": "5:1"
     }
   ],
-  "pos": "2:1"
+  "pos": "1:1"
 }

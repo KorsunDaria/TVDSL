@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Тесты funny_checker.py. Запуск: python3 test_checker.py
-В негативных тестах '§' помечает позицию, где ожидается ошибка."""
+"""Тесты funny_checker.py. Запуск: python3 test_checker.py"""
 
 import os
 
