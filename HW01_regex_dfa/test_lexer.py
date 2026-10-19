@@ -16,7 +16,7 @@
 Плюс граничные случаи на стыке букв и цифр.
 """
 
-from lexer import build_pipeline, tokenize
+from HW01_regex_dfa.lexer import build_pipeline, tokenize
 
 TRANS, ACCEPT, START, ALPHABET, STATS = build_pipeline()
 
