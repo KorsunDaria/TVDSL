@@ -1,0 +1,38 @@
+// calls, tuple assignment, assert
+twice(x: int)
+  returns r: int
+{
+  r = x * 2;
+}
+
+usecall(x: int)
+  returns r: int
+{
+  r = twice(x) + twice(x + 1);
+}
+
+divide(a: int, b: int)
+  requires b != 0
+  returns q: int, r: int
+{
+  q = a / b;
+  r = a - q * b;
+}
+
+caller(a: int, b: int)
+  returns q: int, r: int
+{
+  q, r = divide(a, b);
+  assert a == q * b + r;
+  if (not (q > 0) or r == 0)
+    q = -q;
+  else
+    r = 0;
+}
+
+checked(x: int)
+  returns r: int
+{
+  r = x * 2;
+  assert r >= 0;
+}

@@ -1,0 +1,65 @@
+// loops and arrays
+sumto(n: int)
+  returns s: int
+  uses i: int
+{
+  s = 0;
+  i = 1;
+  while (i <= n) {
+    s = s + i;
+    i = i + 1;
+  }
+}
+
+fact(n: int)
+  returns r: int
+  uses i: int
+{
+  r = 1;
+  i = 2;
+  while (i <= n) {
+    r = r * i;
+    i = i + 1;
+  }
+}
+
+gcd(x: int, y: int)
+  requires x >= 0 and y >= 0
+  returns r: int
+  uses a: int, b: int
+{
+  a = x;
+  b = y;
+  while (b != 0)
+    invariant a >= 0 and b >= 0
+  {
+    r = a;
+    a = b;
+    b = r - (r / b) * b;
+  }
+  r = a;
+}
+
+sumarr(a: int[])
+  returns s: int
+  uses i: int
+{
+  s = 0;
+  i = 0;
+  while (i < length(a)) {
+    s = s + a[i] * 2 - a[i];
+    i = i + 1;
+  }
+}
+
+fill(a: int[], v: int)
+  returns b: int[]
+  uses i: int
+{
+  b = a;
+  i = 0;
+  while (i < length(a)) {
+    b[i] = v + 0;
+    i = i + 1;
+  }
+}

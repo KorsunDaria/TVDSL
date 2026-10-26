@@ -1,0 +1,26 @@
+// branches: and/or/not/->, constant condition
+clamp(x: int, lo: int, hi: int)
+  requires lo <= hi
+  returns r: int
+{
+  if (x < lo) r = lo;
+  else if (x > hi) r = hi;
+  else r = x;
+}
+
+sgn(x: int)
+  returns r: int
+{
+  if (x > 0 and not (x == 0)) r = 1;
+  else if (x < 0 or false) r = -1;
+  else r = 0;
+}
+
+constcond(x: int)
+  returns r: int
+  uses k: int
+{
+  k = 3;
+  if (k > 2) r = x + k; else r = x - k;
+  if (k < 0 -> x > 0) r = r + 1;
+}

@@ -25,18 +25,17 @@ from funny_checker import check
 
 ARITH = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'div'}
 TERM = {'br', 'jmp', 'ret', 'trap'}
-DCE_PURE = {'mov', 'add', 'sub', 'mul', 'neg', 'alen'}   # не бросают исключений -> можно удалять
+DCE_PURE = {'mov', 'add', 'sub', 'mul', 'neg', 'alen'}   
 CSE_OPS = {'add', 'sub', 'mul', 'div', 'neg', 'aload', 'alen'}
 PASSES = {'const', 'alg', 'cse', 'dce'}
 
 
-# ---------------------------------------------------------------- семантика операций
 
-def wrap(x):                      # int = 32 бита, как в JVM
+def wrap(x):                      
     return (x + 2**31) % 2**32 - 2**31
 
 
-def tdiv(a, b):                   # деление с усечением к нулю (idiv)
+def tdiv(a, b):                
     q = abs(a) // abs(b)
     return q if (a < 0) == (b < 0) else -q
 
@@ -47,14 +46,13 @@ CMPF = {'==': lambda a, b: a == b, '!=': lambda a, b: a != b, '<': lambda a, b: 
         '<=': lambda a, b: a <= b, '>': lambda a, b: a > b, '>=': lambda a, b: a >= b}
 
 
-# ---------------------------------------------------------------- IR
 
 @dataclass
 class Instr:
     op: str
-    dst: object = None                       # str | list[str] (call) | None
-    args: list = field(default_factory=list)  # имена (str) или целые константы (int)
-    aux: object = None                       # label / callee / (cmp, Ltrue, Lfalse)
+    dst: object = None                      
+    args: list = field(default_factory=list)  
+    aux: object = None                      
 
     def defs(self):
         return [] if self.dst is None else self.dst if isinstance(self.dst, list) else [self.dst]
@@ -82,21 +80,19 @@ class Instr:
 @dataclass
 class IRFunc:
     name: str
-    params: list      # [(имя, тип)]
+    params: list      
     returns: list
     locals: list
-    types: dict       # имя -> 'int' | 'int[]' (включая временные %tN)
-    code: list        # линейный IR: Instr, в т.ч. op='label'
+    types: dict       
+    code: list        
 
 
 def is_tmp(n):
     return n.startswith('%')
 
 
-# ---------------------------------------------------------------- генерация IR
 
 def runtime(e):
-    """Предикат можно проверить в рантайме (нет кванторов и ссылок на формулы)."""
     if isinstance(e, (Quantifier, FormulaRef)):
         return False
     if isinstance(e, (And, Or, Implies)):
@@ -125,7 +121,6 @@ class Gen:
         self.emit('label', aux=l)
 
     def expr(self, e, dst=None):
-        """Возвращает операнд (int-константа или имя); при dst результат кладётся в dst."""
         if isinstance(e, (Num, Var)):
             v = e.value if isinstance(e, Num) else e.name
             if dst:
@@ -147,7 +142,6 @@ class Gen:
         return d
 
     def cond(self, e, lt, lf):
-        """Условие -> ветвления с коротким замыканием."""
         if isinstance(e, Compare):
             a, b = self.expr(e.left), self.expr(e.right)
             self.emit('br', None, [a, b], (e.op, lt, lf))
@@ -161,7 +155,7 @@ class Gen:
                 self.cond(e.left, mid, lf)
             elif isinstance(e, Or):
                 self.cond(e.left, lt, mid)
-            else:                                   # Implies: not L or R
+            else:                                  
                 self.cond(e.left, mid, lt)
             self.place(mid)
             self.cond(e.right, lt, lf)
@@ -205,7 +199,7 @@ class Gen:
             self.place(bad)
             self.emit('trap')
             self.place(ok)
-        # Assume, нерантаймовые assert: только для верификации, в IR не попадают
+        
 
 
 def gen_function(d):
@@ -217,7 +211,6 @@ def gen_function(d):
     return IRFunc(d.name, mk(d.params), mk(d.returns), mk(d.locals), g.types, g.code)
 
 
-# ---------------------------------------------------------------- CFG
 
 @dataclass
 class BB:
@@ -233,7 +226,6 @@ class BB:
 
 
 def build_cfg(code):
-    """Линейный IR -> список базовых блоков (каждый завершён терминатором)."""
     blocks, n = [], 0
     term = lambda b: bool(b.instrs) and b.instrs[-1].op in TERM
     for i in code:
@@ -260,7 +252,6 @@ def reachable(blocks):
 
 
 def flatten(blocks):
-    """Блоки -> линейный IR (jmp на следующий блок опускается, лишние метки не печатаются)."""
     body = []
     for k, b in enumerate(blocks):
         ins = list(b.instrs)
@@ -277,7 +268,6 @@ def flatten(blocks):
     return out
 
 
-# ---------------------------------------------------------------- живость, конфликты, раскраска
 
 def liveness(blocks):
     use, dfn = {}, {}
@@ -301,7 +291,6 @@ def liveness(blocks):
 
 
 def interference(blocks):
-    """Граф конфликтов временных (%tN) по живости: {tmp: {соседи}}."""
     _, lout = liveness(blocks)
     g = defaultdict(set)
     for b in blocks:
@@ -321,7 +310,6 @@ def interference(blocks):
 
 
 def color(g):
-    """Жадная раскраска (порядок по убыванию степени)."""
     col = {}
     for n in sorted(g, key=lambda n: (-len(g[n]), n)):
         used = {col[m] for m in g[n] if m in col}
@@ -338,10 +326,8 @@ def analyze(blocks):
     return m, g, col
 
 
-# ---------------------------------------------------------------- локальные оптимизации
 
 def p_const(b):
-    """Распространение констант и копий + свёртка; br с константами -> jmp."""
     env = {}
     for i in b.instrs:
         if i.op != 'ret':
@@ -361,7 +347,7 @@ def p_const(b):
 
 
 def p_alg(b):
-    """Алгебраические упрощения: x+0, x*1, x*0, x-x, x/1, x*2 -> x+x."""
+    """упрощения x+0, x*1, x*0, x-x, x/1, x*2 -> x+x."""
     for i in b.instrs:
         if i.op not in ALU or i.op == 'neg':
             continue
@@ -386,7 +372,6 @@ def p_alg(b):
 
 
 def p_cse(b):
-    """Устранение общих подвыражений в пределах блока (add/mul коммутативны)."""
     av = {}
     for i in b.instrs:
         key = None
@@ -434,14 +419,12 @@ def optimize(blocks, passes):
     return blocks
 
 
-# ---------------------------------------------------------------- интерпретатор IR (для проверки)
 
 class Trap(Exception):
     pass
 
 
 def run(prog, name, args, fuel=500000):
-    """Исполняет линейный IR функции name из prog ({имя: IRFunc}); возвращает кортеж результатов."""
     st = [fuel]
 
     def call(name, args):
@@ -493,17 +476,16 @@ def run(prog, name, args, fuel=500000):
     return call(name, list(args))
 
 
-# ---------------------------------------------------------------- конвейер и вывод
+
 
 def compile_text(text, passes):
-    """Funny-код -> (список результатов по функциям, ошибки HW2/HW3)."""
     ast, errors = check(text)
     if errors:
         return None, errors
     res = []
     for d in ast.decls:
         if not isinstance(d, Function):
-            continue                          # формулы — только для спецификаций
+            continue                          
         f = gen_function(d)
         b0 = build_cfg(f.code)
         b1 = optimize(copy.deepcopy(b0), passes)

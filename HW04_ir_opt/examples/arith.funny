@@ -1,0 +1,10 @@
+// arith: constants, algebra, CSE, dead code
+arith(x: int, y: int)
+  returns r: int
+  uses a: int, b: int, dead: int
+{
+  a = 2 + 3 * 4;
+  b = a - 14 + x * 1;
+  dead = x * y + 7;
+  r = (x + y) * (x + y) + (y + x) * 2 + b * 0 + a / 1;
+}
