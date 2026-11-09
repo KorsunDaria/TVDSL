@@ -45,7 +45,6 @@ def outcome(prog, fn, args):
 
 class TestEquivalence(unittest.TestCase):
     def test_results_same_before_after(self):
-        """Результаты IR до/после совпадают для всех 16 комбинаций флагов."""
         for passes in ALL_FLAGS:
             for src, fn, inputs in CASES:
                 res, errors = compile_text(read(src), passes)
