@@ -1,0 +1,331 @@
+{
+  "passes": [],
+  "functions": {
+    "demo": {
+      "params": [
+        [
+          "x",
+          "int"
+        ]
+      ],
+      "returns": [
+        [
+          "r",
+          "int"
+        ]
+      ],
+      "locals": [],
+      "types": {
+        "x": "int",
+        "r": "int",
+        "%t1": "int",
+        "%t2": "int",
+        "%t3": "int",
+        "%t4": "int"
+      },
+      "before": {
+        "code": [
+          {
+            "op": "label",
+            "dst": null,
+            "args": [],
+            "aux": "entry"
+          },
+          {
+            "op": "mul",
+            "dst": "%t1",
+            "args": [
+              3,
+              4
+            ],
+            "aux": null
+          },
+          {
+            "op": "add",
+            "dst": "r",
+            "args": [
+              2,
+              "%t1"
+            ],
+            "aux": null
+          },
+          {
+            "op": "mul",
+            "dst": "%t2",
+            "args": [
+              "x",
+              1
+            ],
+            "aux": null
+          },
+          {
+            "op": "add",
+            "dst": "r",
+            "args": [
+              "%t2",
+              0
+            ],
+            "aux": null
+          },
+          {
+            "op": "add",
+            "dst": "%t3",
+            "args": [
+              "x",
+              5
+            ],
+            "aux": null
+          },
+          {
+            "op": "add",
+            "dst": "%t4",
+            "args": [
+              "x",
+              5
+            ],
+            "aux": null
+          },
+          {
+            "op": "mul",
+            "dst": "r",
+            "args": [
+              "%t3",
+              "%t4"
+            ],
+            "aux": null
+          },
+          {
+            "op": "br",
+            "dst": null,
+            "args": [
+              1,
+              2
+            ],
+            "aux": [
+              "<",
+              "L1",
+              "L3"
+            ]
+          },
+          {
+            "op": "label",
+            "dst": null,
+            "args": [],
+            "aux": "L1"
+          },
+          {
+            "op": "add",
+            "dst": "r",
+            "args": [
+              "r",
+              1
+            ],
+            "aux": null
+          },
+          {
+            "op": "jmp",
+            "dst": null,
+            "args": [],
+            "aux": "L2"
+          },
+          {
+            "op": "label",
+            "dst": null,
+            "args": [],
+            "aux": "L3"
+          },
+          {
+            "op": "sub",
+            "dst": "r",
+            "args": [
+              "r",
+              1
+            ],
+            "aux": null
+          },
+          {
+            "op": "label",
+            "dst": null,
+            "args": [],
+            "aux": "L2"
+          },
+          {
+            "op": "ret",
+            "dst": null,
+            "args": [
+              "r"
+            ],
+            "aux": null
+          }
+        ],
+        "metrics": {
+          "instrs": 12,
+          "blocks": 4,
+          "temps": 4,
+          "colors": 2
+        }
+      },
+      "after": {
+        "code": [
+          {
+            "op": "label",
+            "dst": null,
+            "args": [],
+            "aux": "entry"
+          },
+          {
+            "op": "mul",
+            "dst": "%t1",
+            "args": [
+              3,
+              4
+            ],
+            "aux": null
+          },
+          {
+            "op": "add",
+            "dst": "r",
+            "args": [
+              2,
+              "%t1"
+            ],
+            "aux": null
+          },
+          {
+            "op": "mul",
+            "dst": "%t2",
+            "args": [
+              "x",
+              1
+            ],
+            "aux": null
+          },
+          {
+            "op": "add",
+            "dst": "r",
+            "args": [
+              "%t2",
+              0
+            ],
+            "aux": null
+          },
+          {
+            "op": "add",
+            "dst": "%t3",
+            "args": [
+              "x",
+              5
+            ],
+            "aux": null
+          },
+          {
+            "op": "add",
+            "dst": "%t4",
+            "args": [
+              "x",
+              5
+            ],
+            "aux": null
+          },
+          {
+            "op": "mul",
+            "dst": "r",
+            "args": [
+              "%t3",
+              "%t4"
+            ],
+            "aux": null
+          },
+          {
+            "op": "br",
+            "dst": null,
+            "args": [
+              1,
+              2
+            ],
+            "aux": [
+              "<",
+              "L1",
+              "L3"
+            ]
+          },
+          {
+            "op": "label",
+            "dst": null,
+            "args": [],
+            "aux": "L1"
+          },
+          {
+            "op": "add",
+            "dst": "r",
+            "args": [
+              "r",
+              1
+            ],
+            "aux": null
+          },
+          {
+            "op": "jmp",
+            "dst": null,
+            "args": [],
+            "aux": "L2"
+          },
+          {
+            "op": "label",
+            "dst": null,
+            "args": [],
+            "aux": "L3"
+          },
+          {
+            "op": "sub",
+            "dst": "r",
+            "args": [
+              "r",
+              1
+            ],
+            "aux": null
+          },
+          {
+            "op": "label",
+            "dst": null,
+            "args": [],
+            "aux": "L2"
+          },
+          {
+            "op": "ret",
+            "dst": null,
+            "args": [
+              "r"
+            ],
+            "aux": null
+          }
+        ],
+        "metrics": {
+          "instrs": 12,
+          "blocks": 4,
+          "temps": 4,
+          "colors": 2
+        },
+        "coloring": {
+          "%t3": 0,
+          "%t4": 1,
+          "%t1": 0,
+          "%t2": 0
+        },
+        "cfg": {
+          "entry": [
+            "L1",
+            "L3"
+          ],
+          "L1": [
+            "L2"
+          ],
+          "L3": [
+            "L2"
+          ],
+          "L2": []
+        }
+      }
+    }
+  }
+}

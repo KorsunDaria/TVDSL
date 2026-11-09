@@ -1,0 +1,44 @@
+# оптимизации: нет
+
+== demo ==
+-- IR до --
+entry:
+  %t1 = mul 3 4
+  r = add 2 %t1
+  %t2 = mul x 1
+  r = add %t2 0
+  %t3 = add x 5
+  %t4 = add x 5
+  r = mul %t3 %t4
+  br < 1 2 L1 L3
+L1:
+  r = add r 1
+  jmp L2
+L3:
+  r = sub r 1
+L2:
+  ret r
+-- IR после --
+entry:
+  %t1 = mul 3 4
+  r = add 2 %t1
+  %t2 = mul x 1
+  r = add %t2 0
+  %t3 = add x 5
+  %t4 = add x 5
+  r = mul %t3 %t4
+  br < 1 2 L1 L3
+L1:
+  r = add r 1
+  jmp L2
+L3:
+  r = sub r 1
+L2:
+  ret r
+-- раскраска временных (после) --
+  %t1:c0, %t2:c0, %t3:c0, %t4:c1
+-- метрики (до -> после) --
+  instrs    12 ->   12
+  blocks     4 ->    4
+  temps      4 ->    4
+  colors     2 ->    2

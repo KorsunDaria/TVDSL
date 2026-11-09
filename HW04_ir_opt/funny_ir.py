@@ -3,10 +3,6 @@
 HW4: IR (трёхадресный код) для Funny, CFG, локальные оптимизации, раскраска временных.
 
 Запуск:  python3 funny_ir.py program.funny [--opt const,alg,dce,cse|all|none] [--dot] [--out DIR]
-Выход:   program.ir.txt (IR до/после + метрики), program.ir.json (то же в JSON),
-         с --dot: program.<func>.cfg.dot и program.<func>.conflicts.dot.
-Код возврата: 0 — ок, 1 — синтаксические/семантические ошибки (HW2/HW3).
-Формат IR — README.md.
 """
 
 import argparse
@@ -347,7 +343,6 @@ def p_const(b):
 
 
 def p_alg(b):
-    """упрощения x+0, x*1, x*0, x-x, x/1, x*2 -> x+x."""
     for i in b.instrs:
         if i.op not in ALU or i.op == 'neg':
             continue
@@ -387,7 +382,6 @@ def p_cse(b):
 
 
 def p_dce(blocks):
-    """Удаление мёртвых присваиваний (обратный проход по блоку от live-out)."""
     _, lout = liveness(blocks)
     for b in blocks:
         live, keep = set(lout[b.label]), []

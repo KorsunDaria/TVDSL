@@ -1,4 +1,3 @@
-
 # HW4: IR, CFG, оптимизации, раскраска
 
 ## Запуск
@@ -9,9 +8,7 @@ python3 funny_ir.py program.funny [--opt ...] [--dot] [--out DIR]
 
 - `--opt const,alg,cse,dce` — включить выбранные оптимизации (также `all` и `none`, по умолчанию `const,alg,dce`).
 - `--dot` — дополнительно записать CFG и граф конфликтов в DOT.
-- `--out DIR` — каталог вывода (по умолчанию рядом с исходником).
-
-Выход: `<файл>.ir.txt` и `<файл>.ir.json` (IR до/после, раскраска, метрики).
+- `--out DIR` — каталог вывода (по умолчанию рядом с исходником)..
 
 ## Формат IR
 
@@ -38,5 +35,5 @@ python3 funny_ir.py program.funny [--opt ...] [--dot] [--out DIR]
 ## Тесты
 
 ```
-python3 -m unittest test_ir -v
+python3 test_ir.py
 ```

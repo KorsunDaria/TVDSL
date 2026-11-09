@@ -1,0 +1,143 @@
+# оптимизации: alg,const,dce
+
+== gcd ==
+-- IR до --
+entry:
+  a = mov x
+  b = mov y
+L1:
+  br != b 0 L2 L3
+L2:
+  r = mov a
+  a = mov b
+  %t2 = div r b
+  %t1 = mul %t2 b
+  b = sub r %t1
+  jmp L1
+L3:
+  r = mov a
+  ret r
+-- IR после --
+entry:
+  a = mov x
+  b = mov y
+L1:
+  br != b 0 L2 L3
+L2:
+  r = mov a
+  a = mov b
+  %t2 = div r b
+  %t1 = mul %t2 b
+  b = sub r %t1
+  jmp L1
+L3:
+  r = mov a
+  ret r
+-- раскраска временных (после) --
+  %t1:c0, %t2:c0
+-- метрики (до -> после) --
+  instrs    11 ->   11
+  blocks     4 ->    4
+  temps      2 ->    2
+  colors     1 ->    1
+
+== fill ==
+-- IR до --
+entry:
+  b = mov a
+  i = mov 0
+L1:
+  %t1 = alen a
+  br < i %t1 L2 L3
+L2:
+  b = aupd b i v
+  jmp L1
+L3:
+  ret b
+-- IR после --
+entry:
+  b = mov a
+  i = mov 0
+L1:
+  %t1 = alen a
+  br < i %t1 L2 L3
+L2:
+  b = aupd b i v
+  jmp L1
+L3:
+  ret b
+-- раскраска временных (после) --
+  %t1:c0
+-- метрики (до -> после) --
+  instrs     7 ->    7
+  blocks     4 ->    4
+  temps      1 ->    1
+  colors     1 ->    1
+
+== divide ==
+-- IR до --
+entry:
+  q = div a b
+  %t1 = mul q b
+  r = sub a %t1
+  ret q, r
+-- IR после --
+entry:
+  q = div a b
+  %t1 = mul q b
+  r = sub a %t1
+  ret q, r
+-- раскраска временных (после) --
+  %t1:c0
+-- метрики (до -> после) --
+  instrs     4 ->    4
+  blocks     1 ->    1
+  temps      1 ->    1
+  colors     1 ->    1
+
+== caller ==
+-- IR до --
+entry:
+  q, r = call divide a b
+  %t2 = mul q b
+  %t1 = add %t2 r
+  br == a %t1 L1 L2
+L2:
+  trap
+L1:
+  br > q 0 L6 L3
+L6:
+  br == r 0 L3 L5
+L3:
+  q = neg q
+  jmp L4
+L5:
+  r = mov 0
+L4:
+  ret q, r
+-- IR после --
+entry:
+  q, r = call divide a b
+  %t2 = mul q b
+  %t1 = add %t2 r
+  br == a %t1 L1 L2
+L2:
+  trap
+L1:
+  br > q 0 L6 L3
+L6:
+  br == r 0 L3 L5
+L3:
+  q = neg q
+  jmp L4
+L5:
+  r = mov 0
+L4:
+  ret q, r
+-- раскраска временных (после) --
+  %t1:c0, %t2:c0
+-- метрики (до -> после) --
+  instrs    11 ->   11
+  blocks     7 ->    7
+  temps      2 ->    2
+  colors     1 ->    1

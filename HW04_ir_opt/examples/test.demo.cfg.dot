@@ -1,0 +1,11 @@
+digraph "demo" {
+  node [shape=box, fontname=monospace];
+  "entry" [label="entry:\l%t1 = mul 3 4\lr = add 2 %t1\l%t2 = mul x 1\lr = add %t2 0\l%t3 = add x 5\l%t4 = add x 5\lr = mul %t3 %t4\lbr < 1 2 L1 L3\l"];
+  "entry" -> "L1";
+  "entry" -> "L3";
+  "L1" [label="L1:\lr = add r 1\ljmp L2\l"];
+  "L1" -> "L2";
+  "L3" [label="L3:\lr = sub r 1\ljmp L2\l"];
+  "L3" -> "L2";
+  "L2" [label="L2:\lret r\l"];
+}

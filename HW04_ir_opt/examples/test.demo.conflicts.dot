@@ -1,0 +1,8 @@
+graph "demo" {
+  node [style=filled, colorscheme=set312];
+  "%t1" [label="%t1\nc0", fillcolor=1];
+  "%t2" [label="%t2\nc0", fillcolor=1];
+  "%t3" [label="%t3\nc0", fillcolor=1];
+  "%t4" [label="%t4\nc1", fillcolor=2];
+  "%t3" -- "%t4";
+}

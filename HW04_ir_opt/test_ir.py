@@ -10,11 +10,9 @@ from itertools import chain, combinations
 from funny_ir import PASSES, Trap, compile_text, main, program, run
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-# примеры лежат в ./examples, а если файлы свалены в одну папку с тестом — ищем рядом
 EX = os.path.join(HERE, 'examples') if os.path.isdir(os.path.join(HERE, 'examples')) else HERE
 ALL_FLAGS = [set(c) for c in chain.from_iterable(combinations(sorted(PASSES), k) for k in range(5))]
 
-# (файл, функция, наборы аргументов)
 CASES = [
     ('arith', 'arith', [(x, y) for x in range(-3, 4) for y in (-2, 0, 5)]),
     ('branch', 'clamp', [(x, 0, 5) for x in range(-3, 9)]),
