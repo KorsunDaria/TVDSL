@@ -1,10 +1,14 @@
 {
-  "passes": [],
+  "passes": [
+    "alg",
+    "const",
+    "dce"
+  ],
   "functions": {
-    "demo": {
+    "fact": {
       "params": [
         [
-          "x",
+          "n",
           "int"
         ]
       ],
@@ -16,12 +20,10 @@
       ],
       "locals": [],
       "types": {
-        "x": "int",
+        "n": "int",
         "r": "int",
         "%t1": "int",
-        "%t2": "int",
-        "%t3": "int",
-        "%t4": "int"
+        "%t2": "int"
       },
       "before": {
         "code": [
@@ -32,77 +34,14 @@
             "aux": "entry"
           },
           {
-            "op": "mul",
-            "dst": "%t1",
-            "args": [
-              3,
-              4
-            ],
-            "aux": null
-          },
-          {
-            "op": "add",
-            "dst": "r",
-            "args": [
-              2,
-              "%t1"
-            ],
-            "aux": null
-          },
-          {
-            "op": "mul",
-            "dst": "%t2",
-            "args": [
-              "x",
-              1
-            ],
-            "aux": null
-          },
-          {
-            "op": "add",
-            "dst": "r",
-            "args": [
-              "%t2",
-              0
-            ],
-            "aux": null
-          },
-          {
-            "op": "add",
-            "dst": "%t3",
-            "args": [
-              "x",
-              5
-            ],
-            "aux": null
-          },
-          {
-            "op": "add",
-            "dst": "%t4",
-            "args": [
-              "x",
-              5
-            ],
-            "aux": null
-          },
-          {
-            "op": "mul",
-            "dst": "r",
-            "args": [
-              "%t3",
-              "%t4"
-            ],
-            "aux": null
-          },
-          {
             "op": "br",
             "dst": null,
             "args": [
-              1,
-              2
+              "n",
+              1
             ],
             "aux": [
-              "<",
+              "<=",
               "L1",
               "L3"
             ]
@@ -114,10 +53,9 @@
             "aux": "L1"
           },
           {
-            "op": "add",
+            "op": "mov",
             "dst": "r",
             "args": [
-              "r",
               1
             ],
             "aux": null
@@ -136,10 +74,29 @@
           },
           {
             "op": "sub",
+            "dst": "%t2",
+            "args": [
+              "n",
+              1
+            ],
+            "aux": null
+          },
+          {
+            "op": "call",
+            "dst": [
+              "%t1"
+            ],
+            "args": [
+              "%t2"
+            ],
+            "aux": "fact"
+          },
+          {
+            "op": "mul",
             "dst": "r",
             "args": [
-              "r",
-              1
+              "n",
+              "%t1"
             ],
             "aux": null
           },
@@ -159,10 +116,10 @@
           }
         ],
         "metrics": {
-          "instrs": 12,
+          "instrs": 7,
           "blocks": 4,
-          "temps": 4,
-          "colors": 2
+          "temps": 2,
+          "colors": 1
         }
       },
       "after": {
@@ -174,77 +131,14 @@
             "aux": "entry"
           },
           {
-            "op": "mul",
-            "dst": "%t1",
-            "args": [
-              3,
-              4
-            ],
-            "aux": null
-          },
-          {
-            "op": "add",
-            "dst": "r",
-            "args": [
-              2,
-              "%t1"
-            ],
-            "aux": null
-          },
-          {
-            "op": "mul",
-            "dst": "%t2",
-            "args": [
-              "x",
-              1
-            ],
-            "aux": null
-          },
-          {
-            "op": "add",
-            "dst": "r",
-            "args": [
-              "%t2",
-              0
-            ],
-            "aux": null
-          },
-          {
-            "op": "add",
-            "dst": "%t3",
-            "args": [
-              "x",
-              5
-            ],
-            "aux": null
-          },
-          {
-            "op": "add",
-            "dst": "%t4",
-            "args": [
-              "x",
-              5
-            ],
-            "aux": null
-          },
-          {
-            "op": "mul",
-            "dst": "r",
-            "args": [
-              "%t3",
-              "%t4"
-            ],
-            "aux": null
-          },
-          {
             "op": "br",
             "dst": null,
             "args": [
-              1,
-              2
+              "n",
+              1
             ],
             "aux": [
-              "<",
+              "<=",
               "L1",
               "L3"
             ]
@@ -256,10 +150,9 @@
             "aux": "L1"
           },
           {
-            "op": "add",
+            "op": "mov",
             "dst": "r",
             "args": [
-              "r",
               1
             ],
             "aux": null
@@ -278,10 +171,29 @@
           },
           {
             "op": "sub",
+            "dst": "%t2",
+            "args": [
+              "n",
+              1
+            ],
+            "aux": null
+          },
+          {
+            "op": "call",
+            "dst": [
+              "%t1"
+            ],
+            "args": [
+              "%t2"
+            ],
+            "aux": "fact"
+          },
+          {
+            "op": "mul",
             "dst": "r",
             "args": [
-              "r",
-              1
+              "n",
+              "%t1"
             ],
             "aux": null
           },
@@ -301,14 +213,12 @@
           }
         ],
         "metrics": {
-          "instrs": 12,
+          "instrs": 7,
           "blocks": 4,
-          "temps": 4,
-          "colors": 2
+          "temps": 2,
+          "colors": 1
         },
         "coloring": {
-          "%t3": 0,
-          "%t4": 1,
           "%t1": 0,
           "%t2": 0
         },

@@ -1,7 +1,1 @@
-demo(x: int) returns r: int
-{
-    r = 2 + 3 * 4;
-    r = x * 1 + 0;
-    r = (x + 5) * (x + 5);
-    if (1 < 2) { r = r + 1; } else { r = r - 1; }
-}
+fact(n: int) returns r: int { if (n <= 1) r = 1; else r = n * fact(n - 1); }
