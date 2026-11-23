@@ -1,0 +1,67 @@
+pan: ltl formula l2
+MSC: ~G 41
+  1:	proc  0 (l2) reqack.pml:41 (state 5)	[(1)]
+  2:	proc  1 (sys) reqack.pml:23 (state 40)	[send = 1]
+  3:	proc  1 (sys) reqack.pml:24 (state 7)	[lose = 1]
+  4:	proc  1 (sys) reqack.pml:26 (state 21)	[(((client==idle)&&send))]
+  5:	proc  1 (sys) reqack.pml:36 (state 31)	[((client!=waiting))]
+  6:	proc  0 (l2) reqack.pml:41 (state 5)	[((!(!((client==waiting)))&&!((client==done_ok))))]
+  7:	proc  1 (sys) reqack.pml:23 (state 40)	[send = 1]
+  8:	proc  1 (sys) reqack.pml:24 (state 7)	[lose = 1]
+  9:	proc  1 (sys) reqack.pml:26 (state 21)	[((((client==waiting)&&!(ack))&&(timer<3)))]
+ 10:	proc  1 (sys) reqack.pml:36 (state 31)	[(((client==waiting)&&!(ack)))]
+<<<<<START OF CYCLE>>>>>
+MSC: ~G 46
+ 11:	proc  0 (l2) reqack.pml:46 (state 10)	[(!((client==done_ok)))]
+ 12:	proc  1 (sys) reqack.pml:23 (state 40)	[send = 1]
+ 13:	proc  1 (sys) reqack.pml:24 (state 7)	[lose = 1]
+ 14:	proc  1 (sys) reqack.pml:26 (state 21)	[((((client==waiting)&&!(ack))&&(timer<3)))]
+ 15:	proc  1 (sys) reqack.pml:36 (state 31)	[(((client==waiting)&&!(ack)))]
+ 16:	proc  0 (l2) reqack.pml:46 (state 10)	[(!((client==done_ok)))]
+ 17:	proc  1 (sys) reqack.pml:23 (state 40)	[send = 1]
+ 18:	proc  1 (sys) reqack.pml:24 (state 7)	[lose = 1]
+ 19:	proc  1 (sys) reqack.pml:26 (state 21)	[((((client==waiting)&&!(ack))&&(timer<3)))]
+ 20:	proc  1 (sys) reqack.pml:36 (state 31)	[(((client==waiting)&&!(ack)))]
+ 21:	proc  0 (l2) reqack.pml:46 (state 10)	[(!((client==done_ok)))]
+ 22:	proc  1 (sys) reqack.pml:23 (state 40)	[send = 1]
+ 23:	proc  1 (sys) reqack.pml:24 (state 7)	[lose = 1]
+ 24:	proc  1 (sys) reqack.pml:26 (state 21)	[((((client==waiting)&&!(ack))&&(timer==3)))]
+ 25:	proc  1 (sys) reqack.pml:36 (state 31)	[(((client==waiting)&&!(ack)))]
+ 26:	proc  0 (l2) reqack.pml:46 (state 10)	[(!((client==done_ok)))]
+ 27:	proc  1 (sys) reqack.pml:23 (state 40)	[send = 1]
+ 28:	proc  1 (sys) reqack.pml:24 (state 7)	[lose = 1]
+ 29:	proc  1 (sys) reqack.pml:26 (state 21)	[(((client==done_ok)||(client==done_to)))]
+ 30:	proc  1 (sys) reqack.pml:36 (state 31)	[((client!=waiting))]
+ 31:	proc  0 (l2) reqack.pml:46 (state 10)	[(!((client==done_ok)))]
+ 32:	proc  1 (sys) reqack.pml:23 (state 40)	[send = 1]
+ 33:	proc  1 (sys) reqack.pml:24 (state 7)	[lose = 1]
+ 34:	proc  1 (sys) reqack.pml:26 (state 21)	[(((client==idle)&&send))]
+ 35:	proc  1 (sys) reqack.pml:36 (state 31)	[((client!=waiting))]
+ 36:	proc  0 (l2) reqack.pml:46 (state 10)	[(!((client==done_ok)))]
+ 37:	proc  1 (sys) reqack.pml:23 (state 40)	[send = 1]
+ 38:	proc  1 (sys) reqack.pml:24 (state 7)	[lose = 1]
+ 39:	proc  1 (sys) reqack.pml:26 (state 21)	[((((client==waiting)&&!(ack))&&(timer<3)))]
+ 40:	proc  1 (sys) reqack.pml:36 (state 31)	[(((client==waiting)&&!(ack)))]
+spin: trail ends after 40 steps
+#processes 2:
+ 40:	proc 0 (l2)  reqack.pml:46 (state 10) (invalid end state)
+		(!((client==done_ok)))
+ 40:	proc 1 (sys)  reqack.pml:23 (state 40) (invalid end state)
+		send = 1
+		send = 0
+global vars:
+	mtype  idle:	4
+	mtype  waiting:	3
+	mtype  done_ok:	2
+	mtype  done_to:	1
+	mtype  client:	3
+	bit    req:	0
+	bit    ack:	0
+	byte   timer:	1
+local vars proc 1 (sys):
+	bit    send:	0
+	bit    lose:	0
+	bit    r2:	0
+	bit    a2:	0
+	mtype  c2:	3
+	byte   t2:	1

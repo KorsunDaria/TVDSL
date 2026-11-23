@@ -1,0 +1,34 @@
+pan: ltl formula l2
+pan:1: acceptance cycle (at depth 10)
+pan: wrote reqack.pml.trail
+
+(Spin Version 6.5.2 -- 6 December 2019)
+Warning: Search not completed
+	+ Partial Order Reduction
+
+Bit statespace search for:
+	never claim         	+ (l2)
+	assertion violations	+ (if within scope of claim)
+	acceptance   cycles 	+ (fairness disabled)
+	invalid end states	- (disabled by never claim)
+
+State-vector 32 byte, depth reached 45, errors: 1
+        9 states, stored (13 visited)
+        9 states, matched
+       22 transitions (= visited+matched)
+       54 atomic steps
+
+hash factor: 1.03244e+07 (best if > 100.)
+
+bits set per state: 3 (-k3)
+
+Stats on memory usage (in Megabytes):
+    0.001	equivalent memory usage for states (stored*(State-vector + overhead))
+   16.000	memory used for hash array (-w27)
+    0.076	memory used for bit stack
+    0.534	memory used for DFS stack (-m10000)
+   16.730	total actual memory usage
+
+
+
+pan: elapsed time 0 seconds

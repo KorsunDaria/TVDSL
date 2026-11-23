@@ -1,0 +1,69 @@
+*** This is NuSMV 2.7.1 (compiled on (unknown))
+*** Enabled addons are: compass
+*** For more information on NuSMV see <http://nusmv.fbk.eu>
+*** or email to <nusmv-users@list.fbk.eu>.
+*** Please report bugs to <Please report bugs to <nusmv-users@fbk.eu>>
+
+*** Copyright (c) 2010-2026, Fondazione Bruno Kessler
+
+*** This version of NuSMV is linked to the CUDD library version 2.4.1
+*** Copyright (c) 1995-2004, Regents of the University of Colorado
+
+-- specification EF (client = done_ok & timer = 3)  is false
+-- as demonstrated by the following execution sequence
+Trace Description: CTL Counterexample 
+Trace Type: Counterexample 
+  -> State: 1.1 <-
+    client = idle
+    chan_req = FALSE
+    chan_ack = FALSE
+    timer = 0
+    inc = 1
+-- specification AG (client = waiting -> AF (client = done_ok | client = done_to))  is true
+-- specification EF client = done_ok  is true
+-- specification  G (chan_ack -> timer = 1)  is true
+-- specification  G (chan_ack -> client = waiting)  is true
+-- specification  G (client = done_to -> timer = 3)  is true
+-- specification  G (client = waiting ->  F (client = done_ok | client = done_to))  is true
+-- specification  G (client = waiting ->  F client = done_ok)  is false
+-- as demonstrated by the following execution sequence
+Trace Description: LTL Counterexample 
+Trace Type: Counterexample 
+  -- Loop starts here
+  -> State: 2.1 <-
+    client = idle
+    chan_req = FALSE
+    chan_ack = FALSE
+    timer = 0
+    inc = 1
+  -> Input: 2.2 <-
+    send = TRUE
+    lose = FALSE
+  -> State: 2.2 <-
+    client = waiting
+    chan_req = TRUE
+  -> Input: 2.3 <-
+    send = FALSE
+    lose = TRUE
+  -> State: 2.3 <-
+    chan_req = FALSE
+    timer = 1
+    inc = 2
+  -> Input: 2.4 <-
+    lose = FALSE
+  -> State: 2.4 <-
+    timer = 2
+    inc = 3
+  -> Input: 2.5 <-
+  -> State: 2.5 <-
+    timer = 3
+  -> Input: 2.6 <-
+  -> State: 2.6 <-
+    client = done_to
+  -> Input: 2.7 <-
+  -> State: 2.7 <-
+    client = idle
+    timer = 0
+    inc = 1
+system diameter: 6
+reachable states: 8 (2^3) out of 64 (2^6)

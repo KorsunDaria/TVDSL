@@ -1,0 +1,65 @@
+=== reqack: T = 3 ===
+достижимых состояний: 8;  переходов (с учётом входов send/lose): 32
+
+Достижимые состояния:
+   0: client=done_ok req=FALSE ack=FALSE timer=1
+   1: client=done_to req=FALSE ack=FALSE timer=3
+   2: client=idle req=FALSE ack=FALSE timer=0
+   3: client=waiting req=TRUE ack=FALSE timer=0
+   4: client=waiting req=FALSE ack=FALSE timer=1
+   5: client=waiting req=FALSE ack=TRUE timer=1
+   6: client=waiting req=FALSE ack=FALSE timer=2
+   7: client=waiting req=FALSE ack=FALSE timer=3
+
+Результаты:
+  -- G (chan_ack -> timer = 1) is true
+  -- G (chan_ack -> client = waiting) is true
+  -- G (client = done_to -> timer = T) is true
+  -- G (client = waiting -> F (client = done_ok | client = done_to)) is true
+  -- G (client = waiting -> F client = done_ok) is false
+  -- EF (client = done_ok & timer = T) is false
+  -- AG (client = waiting -> AF (client = done_ok | client = done_to))   [вспомогательное] is true
+  -- EF client = done_ok   [вспомогательное] is true
+
+Контрпример к L2 (лассо: префикс + цикл; префикс кратчайший, получен BFS):
+  -> State 1.1 <-
+       client=idle req=FALSE ack=FALSE timer=0
+  -> Input: send=TRUE lose=FALSE <-
+  -> State 1.2 <-   <== начало цикла (Loop starts here)
+       client=waiting req=TRUE ack=FALSE timer=0
+  -> Input: send=FALSE lose=TRUE <-
+  -> State 1.3 <-
+       client=waiting req=FALSE ack=FALSE timer=1
+  -> Input: send=FALSE lose=FALSE <-
+  -> State 1.4 <-
+       client=waiting req=FALSE ack=FALSE timer=2
+  -> Input: send=FALSE lose=FALSE <-
+  -> State 1.5 <-
+       client=waiting req=FALSE ack=FALSE timer=3
+  -> Input: send=FALSE lose=FALSE <-
+  -> State 1.6 <-
+       client=done_to req=FALSE ack=FALSE timer=3
+  -> Input: send=FALSE lose=FALSE <-
+  -> State 1.7 <-
+       client=idle req=FALSE ack=FALSE timer=0
+  замыкающий переход цикла: Input send=TRUE lose=FALSE -> снова в состояние начала цикла
+  длина трассы: 7 состояний, из них в цикле: 6
+
+Свидетельство для вспомогательной EF client = done_ok (кратчайший путь):
+  -> State 1.1 <-
+       client=idle req=FALSE ack=FALSE timer=0
+  -> Input: send=TRUE lose=FALSE <-
+  -> State 1.2 <-
+       client=waiting req=TRUE ack=FALSE timer=0
+  -> Input: send=FALSE lose=FALSE <-
+  -> State 1.3 <-
+       client=waiting req=FALSE ack=TRUE timer=1
+  -> Input: send=FALSE lose=FALSE <-
+  -> State 1.4 <-
+       client=done_ok req=FALSE ack=FALSE timer=1
+
+Обоснование ложности P6 = EF (client = done_ok & timer = T):
+  |{s : client=done_ok & timer=T} ∩ Reach| = 0
+  состояния Reach с client=done_ok: client=done_ok req=FALSE ack=FALSE timer=1
+  INIT ∈ lfp Z.(p ∪ EX Z) = False
+  инвариант I: client=done_ok -> timer=1 выполнен на всех достижимых состояниях: True

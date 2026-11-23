@@ -1,0 +1,37 @@
+pan: ltl formula s3
+
+(Spin Version 6.5.2 -- 6 December 2019)
+	+ Partial Order Reduction
+
+Bit statespace search for:
+	never claim         	+ (s3)
+	assertion violations	+ (if within scope of claim)
+	acceptance   cycles 	+ (fairness disabled)
+	invalid end states	- (disabled by never claim)
+
+State-vector 32 byte, depth reached 34, errors: 0
+        9 states, stored
+       28 states, matched
+       37 transitions (= stored+matched)
+       90 atomic steps
+
+hash factor: 1.49131e+07 (best if > 100.)
+
+bits set per state: 3 (-k3)
+
+Stats on memory usage (in Megabytes):
+    0.001	equivalent memory usage for states (stored*(State-vector + overhead))
+   16.000	memory used for hash array (-w27)
+    0.076	memory used for bit stack
+    0.534	memory used for DFS stack (-m10000)
+   16.730	total actual memory usage
+
+
+unreached in proctype sys
+	reqack.pml:44, state 43, "-end-"
+	(1 of 43 states)
+unreached in claim s3
+	_spin_nvr.tmp:26, state 10, "-end-"
+	(1 of 10 states)
+
+pan: elapsed time 0 seconds
