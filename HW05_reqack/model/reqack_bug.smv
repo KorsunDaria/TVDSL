@@ -1,0 +1,48 @@
+-- HW5, практика 11:
+-- Отличие от reqack.smv ровно одно: ACK не очищается из канала (залипает).
+
+MODULE main
+VAR
+  client   : {idle, waiting, done_ok, done_to};
+  chan_req : boolean;          
+  chan_ack : boolean;          
+  timer    : 0..3;            
+IVAR
+  send : boolean;
+  lose : boolean;
+DEFINE
+  inc := case timer = 0 : 1; timer = 1 : 2; TRUE : 3; esac;
+ASSIGN
+  init(client)   := idle;
+  init(chan_req) := FALSE;
+  init(chan_ack) := FALSE;
+  init(timer)    := 0;
+
+  next(client) := case
+    client = idle & send          : waiting;
+    client = idle                 : idle;
+    client = waiting & chan_ack   : done_ok;     
+    client = waiting & timer = 3  : done_to;
+    client = waiting              : waiting;
+    TRUE                          : idle;        
+  esac;
+  next(chan_req) := client = idle & send;
+  next(chan_ack) := (chan_req & !lose) | chan_ack;  -- ОШИБКА: ответ не исчезает из канала
+  next(timer) := case
+    client = waiting & !chan_ack  : inc;
+    client = waiting              : timer;
+    TRUE                          : 0;
+  esac;
+
+-- Безопасность (G)
+LTLSPEC NAME s1 := G (chan_ack -> timer = 1)
+LTLSPEC NAME s2 := G (chan_ack -> client = waiting)
+LTLSPEC NAME s3 := G (client = done_to -> timer = 3)
+-- Живость (response)
+LTLSPEC NAME l1 := G (client = waiting -> F (client = done_ok | client = done_to))
+LTLSPEC NAME l2 := G (client = waiting -> F client = done_ok)
+-- CTL (экзистенциальное, ожидаем false)
+SPEC NAME p6_ef := EF (client = done_ok & timer = 3)
+-- Вспомогательные проверки (не входят в набор из 6 свойств)
+SPEC NAME c1_af := AG (client = waiting -> AF (client = done_ok | client = done_to))
+SPEC NAME c2_ef := EF client = done_ok
