@@ -34,15 +34,15 @@ ASSIGN
     TRUE                          : 0;
   esac;
 
--- Безопасность (G)
+-- Безопасность 
 LTLSPEC NAME s1 := G (chan_ack -> timer = 1)
 LTLSPEC NAME s2 := G (chan_ack -> client = waiting)
 LTLSPEC NAME s3 := G (client = done_to -> timer = 3)
--- Живость (response)
+-- Живость 
 LTLSPEC NAME l1 := G (client = waiting -> F (client = done_ok | client = done_to))
 LTLSPEC NAME l2 := G (client = waiting -> F client = done_ok)
--- CTL (экзистенциальное, ожидаем false)
+-- CTL 
 SPEC NAME p6_ef := EF (client = done_ok & timer = 3)
--- Вспомогательные проверки (не входят в набор из 6 свойств)
+-- Вспомогательные проверки
 SPEC NAME c1_af := AG (client = waiting -> AF (client = done_ok | client = done_to))
 SPEC NAME c2_ef := EF client = done_ok
